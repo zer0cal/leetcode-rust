@@ -24,8 +24,8 @@ impl Solution {
                 println!("a.l=1,\t{},\t{},\t{:?}\t{:?}", i, &a[0].min(b[0]), a, b);
                 Self::next(b, a, i + 1, len, &a[0].min(b[0]))
             } else if b.len() == 1 {
-                println!("b.l=1,\t{},\t{},\t{:?}\t{:?}", i, &a[1].min(b[0]), a, b);
-                Self::next(&a[1..], b, i + 1, len, &a[1].min(b[0]))
+                println!("b.l=1,\t{},\t{},\t{:?}\t{:?}", i, &a[0].min(b[0]), a, b);
+                Self::next(&a[1..], b, i + 1, len, &a[0].min(b[0]))
             } else if a[0] < b[0] {
                 println!("a < b,\t{},\t{},\t{:?}\t{:?}", i, a[0], a, b);
                 Self::next(&a[1..], b, i + 1, len, &a[0])
