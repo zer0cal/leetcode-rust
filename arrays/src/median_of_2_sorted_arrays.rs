@@ -4,21 +4,25 @@ impl Solution {
     pub fn find_median_sorted_arrays(nums1: Vec<i32>, nums2: Vec<i32>) -> f64 {
         let l = nums1.len() + nums2.len();
         if nums1.is_empty() {
-            if l == 1 {
-                return nums2[0] as f64;
-            }
-            return Self::next(&nums2[..l / 2], &nums2[l / 2..], 0, &l, &nums2[0]);
+            return match nums2.len() {
+                1 => nums2[0] as f64,
+                _ => Self::next(&nums2[..l / 2], &nums2[l / 2..], 0, &l, &nums2[0]),
+            };
         };
         if nums2.is_empty() {
-            if l == 1 {
-                return nums1[0] as f64;
-            }
-            return Self::next(&nums1[..l / 2], &nums1[l / 2..], 0, &l, &nums1[0]);
+            return match nums1.len() {
+                1 => nums1[0] as f64,
+                _ => Self::next(&nums1[..l / 2], &nums1[l / 2..], 0, &l, &nums1[0]),
+            };
         };
         Self::next(&nums1, &nums2, 0, &l, &nums1[0].min(nums2[0]))
     }
 
     fn next(left: &[i32], right: &[i32], deepness: i32, length: &usize, previous: &i32) -> f64 {
+        println!(
+            "{:?} {:?} {} {} {}",
+            left, right, deepness, length, previous
+        );
         let limit = length.div_ceil(2) as i32;
         if deepness != limit {
             return if left.is_empty() && right.is_empty() {
@@ -28,15 +32,15 @@ impl Solution {
             } else if right.is_empty() {
                 Self::next(&left[1..], right, deepness + 1, length, &left[0])
             } else if left[0] < right[0] {
-                let l = match left.get(1) {
-                    Some(_) => &left[1..],
-                    None => &[],
+                let l = match left.len() {
+                    1 => &[],
+                    _ => &left[1..],
                 };
                 Self::next(l, right, deepness + 1, length, &left[0])
             } else {
-                let r = match right.get(1) {
-                    Some(_) => &right[1..],
-                    None => &[],
+                let r = match right.len() {
+                    1 => &[],
+                    _ => &right[1..],
                 };
                 Self::next(left, r, deepness + 1, length, &right[0])
             };
@@ -118,5 +122,11 @@ mod tests {
     fn five_and_four() {
         let result = Solution::find_median_sorted_arrays(vec![1, 3, 5, 7, 9], vec![2, 4, 6, 8]);
         assert_eq!(result, 5.0f64);
+    }
+
+    #[test]
+    fn one_and_three() {
+        let result = Solution::find_median_sorted_arrays(vec![1], vec![2, 3, 4]);
+        assert_eq!(result, 2.5f64);
     }
 }
