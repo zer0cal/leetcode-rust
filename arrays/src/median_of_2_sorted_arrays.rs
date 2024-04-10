@@ -28,7 +28,11 @@ impl Solution {
             return if left.is_empty() && right.is_empty() {
                 *previous as f64
             } else if left.is_empty() {
-                Self::next(right, left, deepness + 1, length, &right[0])
+                let r = match right.len() {
+                    1 => &[],
+                    _ => &right[1..],
+                };
+                Self::next(r, left, deepness + 1, length, &right[0])
             } else if right.is_empty() {
                 Self::next(&left[1..], right, deepness + 1, length, &left[0])
             } else if left[0] < right[0] {
