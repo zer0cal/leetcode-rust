@@ -19,10 +19,6 @@ impl Solution {
     }
 
     fn next(left: &[i32], right: &[i32], deepness: i32, length: &usize, previous: &i32) -> f64 {
-        println!(
-            "{:?} {:?} {} {} {}",
-            left, right, deepness, length, previous
-        );
         let limit = length.div_ceil(2) as i32;
         if deepness != limit {
             return if left.is_empty() && right.is_empty() {

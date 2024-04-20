@@ -4,15 +4,10 @@ pub struct Solution {}
 
 impl Solution {
     pub fn max_area(height: Vec<i32>) -> i32 {
-        println!("{:?}", height);
         let mut left = 0;
         let mut right = height.len() - 1;
         let mut result = 0;
         while left < right {
-            println!(
-                "<{} {}>, [{} {}], {}",
-                left, right, height[left], height[right], result
-            );
             let temp = min(height[left], height[right]) * ((right - left) as i32);
             result = max(result, temp);
             if height[left] < height[right] {

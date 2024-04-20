@@ -10,18 +10,13 @@ impl Solution {
         for i in 1..nums.len() - 1 {
             nums[0..i]
                 .iter()
-                .skip_while(|x| **x + nums[i] < nums[i + 1])
-                .for_each(|l| {
-                    match nums[i + 1..nums.len()]
-                        .iter()
-                        .take_while(|x| x == &&(-(l + &nums[i])))
-                        .next()
-                    {
-                        Some(r) => {
-                            sums.insert(vec![l, &nums[i], r]);
-                        }
-                        None => (),
+                .rev()
+                .take_while(|x| **x + nums[i] <= -nums[i + 1])
+                .for_each(|l| match nums[i + 1..].binary_search(&(-(l + nums[i]))) {
+                    Ok(j) => {
+                        sums.insert(vec![l, &nums[i], &nums[i + j + 1]]);
                     }
+                    Err(_) => (),
                 });
         }
         sums.iter()
@@ -35,17 +30,23 @@ mod tests {
     use crate::three_sum::Solution;
 
     #[test]
+    fn fail() {
+        let res = Solution::three_sum(vec![-1, 0, 1, 2, -1, 4]);
+        assert!(false);
+    }
+
+    #[test]
     fn first() {
         let res = Solution::three_sum(vec![-1, 0, 1, 2, -1, 4]);
         let solution = vec![vec![-1, -1, 2], vec![-1, 0, 1]];
-        assert!(res.iter().all(|x| solution.contains(x)));
+        assert!(solution.iter().all(|x| res.contains(x)));
     }
 
     #[test]
     fn zeros() {
         let res = Solution::three_sum(vec![0, 0, 0]);
         let solution = vec![vec![0, 0, 0]];
-        assert!(res.iter().all(|x| solution.contains(x)));
+        assert!(solution.iter().all(|x| res.contains(x)));
     }
 
     #[test]
