@@ -1,5 +1,3 @@
-use std::rc::Rc;
-
 struct Solution;
 
 impl Solution {
@@ -7,12 +5,12 @@ impl Solution {
         if s.is_empty() {
             return 0;
         }
-        let rc_s = s.into_bytes();
+        let s_bytes = s.into_bytes();
         let mut res = 1;
         let mut i = 0;
-        while i < rc_s.len() - res {
-            for (j, e) in rc_s[i..].iter().enumerate() {
-                if !rc_s[i..i + j].contains(e) {
+        while i < s_bytes.len() - res {
+            for (j, e) in s_bytes[i..].iter().enumerate() {
+                if !s_bytes[i..i + j].contains(e) {
                     res = res.max(j + 1);
                 } else {
                     break;
